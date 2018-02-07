@@ -64,9 +64,7 @@ public class Main {
 							if (apiSecret == null)
 								apiSecret = line;
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			} catch (IOException e) { e.printStackTrace(); }
 
 		BinanceApiClientFactory fty = BinanceApiClientFactory.newInstance();
 		BinanceApiRestClient cnt = fty.newRestClient();
