@@ -31,13 +31,13 @@ public class Main {
 			switch (menu = scanner.nextInt()) {
 
 				case 1:
-					System.out.println("REST");
+					System.out.println(" > REST\n");
 					break;
 				case 2:
-					System.out.println("NonBlocking REST");
+					System.out.println(" > NonBlocking REST\n");
 					break;
 				case 3:
-					System.out.println("WebSocket");
+					System.out.println(" > WebSocket\n");
 					break;
 
 				default:
@@ -47,18 +47,21 @@ public class Main {
 			}
 		}
 
-		String apiKey;
+		String usePrivateKey;
+		String apiKey = null;
 		String apiSecret = null;
-		do System.out.println("Use a private API key? (y/n)");
-		while (!((apiKey = scanner.nextLine()).matches("[yn]")));
 
-		if (apiKey.equals("y"))
-			try(BufferedReader br = new BufferedReader(new FileReader("~/bnc.api.key"))) {
+		scanner.nextLine();
+		do System.out.println("Use a private API key? (y/n)");
+		while (!((usePrivateKey = scanner.nextLine()).matches("[yn]")));
+
+		if (usePrivateKey.equals("y"))
+			try(BufferedReader br = new BufferedReader(new FileReader("/var/tmp/bnc.api.key"))) {
 				String line;
 
 				while ( (line = br.readLine()) != null )
 					if (line.length() == 64)
-						if (apiKey.length() != 64)
+						if (apiKey == null)
 							apiKey = line;
 						else
 							if (apiSecret == null)
@@ -66,8 +69,16 @@ public class Main {
 
 			} catch (IOException e) { e.printStackTrace(); }
 
-		BinanceApiClientFactory fty = BinanceApiClientFactory.newInstance();
-		BinanceApiRestClient cnt = fty.newRestClient();
+		BinanceApiClientFactory factory;
+
+		if (usePrivateKey.equals("y"))
+			factory = BinanceApiClientFactory.newInstance(apiKey, apiSecret);
+		else
+			factory = BinanceApiClientFactory.newInstance();
+
+		BinanceApiRestClient client = factory.newRestClient();
+
+		System.out.printf("Key:\t%s\nSecret:\t%s\n", apiKey, apiSecret);
 
 	}
 
