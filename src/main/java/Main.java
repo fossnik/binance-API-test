@@ -46,12 +46,12 @@ public class Main {
 					menu = -1;
 			}
 		}
+		scanner.nextLine();
 
 		String usePrivateKey;
 		String apiKey = null;
 		String apiSecret = null;
 
-		scanner.nextLine();
 		do System.out.println("Use a private API key? (y/n)");
 		while (!((usePrivateKey = scanner.nextLine()).matches("[yn]")));
 
@@ -78,8 +78,19 @@ public class Main {
 
 		BinanceApiRestClient client = factory.newRestClient();
 
-		System.out.printf("Key:\t%s\nSecret:\t%s\n", apiKey, apiSecret);
+		if (menu == 1) {
+			rest.printMenu(usePrivateKey);
+		}
 
+		if (menu == 2) {
+			throw new UnsupportedOperationException("Asynchronous API not yet Implemented");
+		}
+
+		if (menu == 3) {
+			throw new UnsupportedOperationException("Asynchronous API not yet Implemented");
+		}
+
+		System.exit(0);
 	}
 
 }
