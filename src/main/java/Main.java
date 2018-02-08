@@ -12,6 +12,7 @@ import java.util.Scanner;
 /**
  * Some Useful Documentation
  * 	https://github.com/binance-exchange/binance-java-api
+ * 	https://github.com/binance-exchange/binance-official-api-docs
  * 	https://python-binance.readthedocs.io/en/latest/index.html
  */
 
@@ -19,44 +20,18 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
-
-		int menu = -1;
-		while (menu == -1) {
-			System.out.println("Which API Component Would you like to test?\n" +
-					"\t1 - REST\n" +
-					"\t2 - Non-blocking (Asynchronous) REST\n" +
-					"\t3 - WebSocket\n");
-
-			switch (menu = scanner.nextInt()) {
-
-				case 1:
-					System.out.println(" > REST\n");
-					break;
-				case 2:
-					System.out.println(" > NonBlocking REST\n");
-					break;
-				case 3:
-					System.out.println(" > WebSocket\n");
-					break;
-
-				default:
-					System.out.println("\tInvalid Selection\n");
-					scanner.nextLine();
-					menu = -1;
-			}
-		}
-		scanner.nextLine();
+		final String keyFile = "/var/tmp/bnc.api.key";
 
 		String usePrivateKey;
 		String apiKey = null;
 		String apiSecret = null;
+		Scanner scanner = new Scanner(System.in);
 
-		do System.out.println("Use a private API key? (y/n)");
+		do System.out.printf("Use API key from file '%s' ? (y/n)", keyFile);
 		while (!((usePrivateKey = scanner.nextLine()).matches("[yn]")));
 
 		if (usePrivateKey.equals("y"))
-			try(BufferedReader br = new BufferedReader(new FileReader("/var/tmp/bnc.api.key"))) {
+			try(BufferedReader br = new BufferedReader(new FileReader(keyFile))) {
 				String line;
 
 				while ( (line = br.readLine()) != null )
@@ -78,17 +53,25 @@ public class Main {
 
 		BinanceApiRestClient client = factory.newRestClient();
 
-		if (menu == 1) {
-			rest.printMenu(usePrivateKey);
-		}
+		int menu = -1;
+		while (menu == -1) {
+			System.out.println("Which API Component Would you like to test?\n" +
+					"\t1 - REST\n");
 
-		if (menu == 2) {
-			throw new UnsupportedOperationException("Asynchronous API not yet Implemented");
-		}
+			switch (menu = scanner.nextInt()) {
 
-		if (menu == 3) {
-			throw new UnsupportedOperationException("Asynchronous API not yet Implemented");
+				case 1:
+					System.out.println(" > REST\n");
+					break;
+
+				default:
+					System.out.println("\tInvalid Selection\n");
+					scanner.nextLine();
+					menu = -1;
+			}
 		}
+		scanner.nextLine();
+
 
 		System.exit(0);
 	}
