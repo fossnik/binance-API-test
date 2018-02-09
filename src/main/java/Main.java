@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
 
 	private static Scanner scanner = new Scanner(System.in);
-	private static final String keyFile = "/var/tmp/bnc.api.ky";
+	private static final String keyFile = "/var/tmp/bnc.api.key";
 
 	public static void main(String[] args) {
 
@@ -29,7 +29,6 @@ public class Main {
 			System.out.println("Which API Component Would you like to test?\n" +
 					"\t1 - REST\n");
 
-			scanner.nextLine();
 			switch (menu = scanner.nextInt()) {
 
 				case 1:

@@ -23,7 +23,7 @@ public class Restive {
 					" 11 - Open Orders\n" +
 					"\n");
 
-		System.out.println("\t=== Public API Data ===\n" +
+		System.out.println("\t=== Public API ===\n" +
 				" 0 - Quit\n" +
 				" 1 - List All Prices\n" +
 				" 2 - OrderBook Queries\n");
