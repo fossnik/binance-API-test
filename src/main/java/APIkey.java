@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -12,7 +13,8 @@ public class APIkey {
 	}
 
 	public boolean validate() {
-		try (BufferedReader br = new BufferedReader(new FileReader(this.filePath))) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(this.filePath));
 			String line;
 
 			while ((line = br.readLine()) != null)
@@ -22,8 +24,7 @@ public class APIkey {
 					else if (this.Secret == null)
 						this.Secret = line;
 
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch ( Exception e ) {
 			return false;
 		}
 
