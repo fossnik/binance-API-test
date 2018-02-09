@@ -2,13 +2,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class APIkey extends Main {
+public class APIkey {
 	private String Key;
 	private String Secret;
+	private String filePath;
 
-	public APIkey(String file) {
+	APIkey(String file) {
+		this.filePath = file;
+	}
 
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+	public boolean validate() {
+		try (BufferedReader br = new BufferedReader(new FileReader(this.filePath))) {
 			String line;
 
 			while ((line = br.readLine()) != null)
@@ -20,8 +24,10 @@ public class APIkey extends Main {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 
+		return this.getKey().length() == 64 && this.getSecret().length() == 64;
 	}
 
 	public String getKey() {

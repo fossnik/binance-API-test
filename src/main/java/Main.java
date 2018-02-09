@@ -12,24 +12,17 @@ import java.util.Scanner;
 
 public class Main {
 
+	private static Scanner scanner = new Scanner(System.in);
+	private static final String keyFile = "/var/tmp/bnc.api.key";
+
 	public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
-		final String keyFile = "/var/tmp/bnc.api.APIkey";
 		APIkey key = new APIkey(keyFile);
 		String usePrivateKey = "n";
 
-		if (key.getKey().length() == 64 && key.getSecret().length() == 64)
-			do System.out.printf("Use API APIkey from file '%s' ? (y/n)", keyFile);
+		if (key.validate())
+			do System.out.printf("Use API key from file '%s' ? (y/n)\n", keyFile);
 			while(!(usePrivateKey = scanner.nextLine()).matches("[yn]"));
-
-		BinanceApiClientFactory factory;
-		if (usePrivateKey.equals("y"))
-			factory = BinanceApiClientFactory.newInstance(key.getKey(), key.getSecret());
-		else
-			factory = BinanceApiClientFactory.newInstance();
-
-		BinanceApiRestClient client = factory.newRestClient();
 
 		int menu = -1;
 		scanner.nextLine();
@@ -40,7 +33,25 @@ public class Main {
 			switch (menu = scanner.nextInt()) {
 
 				case 1:
-					System.out.println(" > REST\n");
+					BinanceApiClientFactory factory;
+
+					if (usePrivateKey.equals("y"))
+						factory = BinanceApiClientFactory.newInstance(key.getKey(), key.getSecret());
+					else
+						factory = BinanceApiClientFactory.newInstance();
+
+					BinanceApiRestClient client = factory.newRestClient();
+
+					Restive.printMenu();
+
+					int action;
+					boolean success;
+
+					do {
+						action = Restive.selectAction();
+						success = Restive.execute(action,  usePrivateKey.equals("y"), factory, client);
+					} while (!success);
+
 					break;
 
 				default:
@@ -49,7 +60,6 @@ public class Main {
 					menu = -1;
 			}
 		}
-
 
 		System.exit(0);
 	}
