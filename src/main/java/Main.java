@@ -26,7 +26,7 @@ public class Main {
 
 		int menu = -1;
 		while (menu == -1) {
-			System.out.println("Which API Component Would you like to test?\n" +
+			System.out.println("\nWhich API Component Would you like to test?\n" +
 					"\t1 - REST\n");
 
 			switch (menu = scanner.nextInt()) {
